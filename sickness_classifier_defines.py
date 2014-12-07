@@ -3,7 +3,7 @@ from nltk.corpus.reader.plaintext import PlaintextCorpusReader
 from nltk.probability import LidstoneProbDist, WittenBellProbDist
 from nltk.model import NgramModel
 from nltk.tokenize import sent_tokenize, word_tokenize
-
+from tweet_tokenizer import Tokenizer
 
 def generateNgramModel(corpusPath, corpusName):
     corpusdir = 'corpora/' # Directory of corpus.
@@ -14,6 +14,9 @@ def generateNgramModel(corpusPath, corpusName):
 
 #returns TRUE if the first ngrammodel has a lower perplexity than the second
 def sicknessClassifier(SickNgramModel, HealthyNgramModel, tweet_string):
-    sick_perplexity = SickNgramModel.perplexity(word_tokenize(tweet_string))
-    healthy_perplexity = HealthyNgramModel.perplexity(word_tokenize(tweet_string))
+    ark_tokenizer = Tokenizer()
+    sick_perplexity = SickNgramModel.perplexity(ark_tokenizer.tokenize(tweet_string))
+    healthy_perplexity = HealthyNgramModel.perplexity(ark_tokenizer.tokenize(tweet_string))
+    print sick_perplexity
+    print healthy_perplexity
     return ( sick_perplexity <= healthy_perplexity)

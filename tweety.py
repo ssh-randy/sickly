@@ -29,7 +29,6 @@ while True:
             #print tweet.created_at
     except tweepy.TweepError:
         time.sleep(60*15)
-        continue
+        continue    
     except StopIteration:
         break
-        
