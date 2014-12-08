@@ -26,7 +26,7 @@ def gather_sick_tweets(search_terms, since_field=None, until_field=None):
             print "finding tweets between " + since_field + " until " + until_field
         else:
             print "no since and until_fields given"
-            c = tweepy.Cursor(api.search, q=search, include_entities=True, lang='en', wait_on_rate_limit=True).items()
+            c = tweepy.Cursor(api.search, q=search, include_entities=True, lang='en', wait_on_rate_limit=True, result_type="recent").items()
         iterator = 20
         while True:
             try:
