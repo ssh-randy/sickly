@@ -2,6 +2,7 @@ import tweepy
 from app import db, Tweet
 from sickness_classifier_defines import generateNgramModel, sicknessClassifier
 import time
+from sqlalchemy import literal
 
 def gather_sick_tweets(search_terms, since_field=None, until_field=None):
     
@@ -36,8 +37,11 @@ def gather_sick_tweets(search_terms, since_field=None, until_field=None):
                     if sicknessClassifier(sickNgramModel, healthyNgramModel, str):
                         #add to database
                         print "TWEET TAGGED"
-                        #for 
-                        add_tweet(tweet)
+                        print db.session.query(Tweet).filter(Tweet.tweet_id == tweet.id).count() 
+                        if db.session.query(Tweet).filter(Tweet.tweet_id == tweet.id).count() == 0:
+                            add_tweet(tweet)
+                        else:
+                            print "NOT ADDED"
                 if iterator <= 0:
                     db.session.commit()
                     iterator = 20
@@ -62,7 +66,8 @@ def add_tweet(tweet):
     print tweet.coordinates['coordinates'][0]
     
     t = Tweet(date=tweet.created_at, position_x=int(1000*tweet.coordinates['coordinates'][0]), position_y=int(1000*tweet.coordinates['coordinates'][1]), tweet_id=tweet.id)
-    db.session.add(t)
+    if int(1000*tweet.coordinates['coordinates'][0]) != 0 and int(1000*tweet.coordinates['coordinates'][1]) != 0:
+        db.session.add(t)
     return
 
 import time

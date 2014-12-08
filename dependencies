@@ -4,3 +4,4 @@ nltk==2.0.4
 flask-sqlalchemy
 sqlalchemy-migrate
 Flask-Restless
+flask-cors
